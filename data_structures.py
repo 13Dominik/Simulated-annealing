@@ -21,22 +21,62 @@ class Station:
         self.extra_route = extra_route
         self.road_position = road_position
 
+    def __str__(self):
+        return f"{self.name} {self.price}"
+
+    def __repr__(self):
+        return f"{self.name} {self.price}$"
+
 
 class Solution:
 
-    def __init__(self, car: Car):
+    def __init__(self, car: Car, solution=None):
         """
-        :param solution: Vector of stations and amout of petrol we should buy, for instance:
-        [(A, 10), (B, 21), (C, 234)]
+        :param vector: Vector of stations and amout of petrol we should buy, for instance:
+        [(A, 10), (B, 21), (C, 234)], if None it will be a empty list and we can add
         """
-        self.solution = []
+        self.solution = solution
         self.car = car
 
-    def add_station(self, station_amount: Tuple[Station, int]):
-        self.solution.append(station_amount)
+    @property
+    def solution(self):
+        return self.__solution
 
-    def solution_value(self):
+    @solution.setter
+    def solution(self, value):
+        if value is None:
+            self.__solution = []
+        else:
+            self.__solution = value
+
+    def add_station(self, station_amount: Tuple[Station, int]) -> None:
+        """
+        Add new station and amout of petrol bought eg. ("A1", 20)
+        :param station_amount:
+        :return:
+        """
+        self.__solution.append(station_amount)
+
+    def solution_value(self) -> float:
         return sum([station[0].price * station[1] for station in self.solution])
 
     def __iter__(self):
         return iter(self.solution)
+
+    def __gt__(self, other):
+        return self.solution_value() > other.solution_value()
+
+    def __ge__(self, other):
+        return self.solution_value() >= other.solution_value()
+
+    def __lt__(self, other):
+        return self.solution_value() < other.solution_value()
+
+    def __le__(self, other):
+        return self.solution_value() <= other.solution_value()
+
+    def __str__(self):
+        return str(self.__solution)
+
+    def __repr__(self):
+        return str(self.__solution)
