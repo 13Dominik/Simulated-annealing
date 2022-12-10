@@ -1,8 +1,6 @@
 import unittest
-
-import utils
-from .. import data_structures as ds
-from utils import any_station_too_far, fuel_amount_in_limit
+import data_structures as ds
+from utils import any_station_too_far, fuel_amount_in_limit, list_of_possible_station
 
 
 class TestAny_station_too_far(unittest.TestCase):
@@ -60,7 +58,7 @@ class TestListOfStation(unittest.TestCase):
         s5 = ds.Station("E", 10, 20, 500)
         s6 = ds.Station("F", 15, 10, 600)
 
-        self.assertEqual([s2, s3, s4], utils.list_of_possible_station(c, [s1, s2, s3, s4, s5, s6]))
+        self.assertEqual([s2, s3, s4], list_of_possible_station(c, [s1, s2, s3, s4, s5, s6]))
 
 
 if __name__ == '__main__':

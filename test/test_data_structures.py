@@ -1,5 +1,5 @@
 import unittest
-from .. import data_structures as ds
+import data_structures as ds
 
 
 class TestSolution(unittest.TestCase):
