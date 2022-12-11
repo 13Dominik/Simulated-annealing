@@ -120,7 +120,10 @@ class Solution:
         return self.solution_value() <= other.solution_value()
 
     def __str__(self):
-        return str(self.__solution)
+        return str(self.__solution) + str(self.solution_value())
 
     def __repr__(self):
-        return str(self.__solution)
+        return str(self.__solution) + str(self.solution_value())
+
+    def __sub__(self, other):
+        return self.solution_value() - other.solution_value()
