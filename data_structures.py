@@ -29,22 +29,25 @@ class Car:
         :param ave_fuel_consumption: Average fuel consumption
         :param curr_position: Current position of car at road
         :param curr_fuel_level: Current amount of fuel in tank
-        :param curr_level_at_steps: Contains fuel level in tank at every route stage (station position)
         :return: None
         """
         self.tank_capacity = tank_capacity
         self.ave_fuel_consumption = ave_fuel_consumption
         self.curr_position = curr_position
         self.curr_fuel_level = curr_fuel_level
+        # Contains fuel level in tank at every route stage (station position)
         self.fuel_level_at_steps = [self.curr_fuel_level]
 
-    def move_car(self, station: Station) -> float:
+    def get_fuel_level_at_step(self,index):
+        return self.fuel_level_at_steps[index]
+
+    def move_car(self, station: Station, station_to_drop: int = None) -> float:
         """
         Method which update car position, current fuel level, and fuel level at steps
         :param station: Station where we will tank, we are tanking as much as possible
+        :param station_to_drop: index to update at fuel_level_at_steps - !important - fist station in solution its 1 index here
         :return: Amount of fuel we are tanking on this particular station
         """
-        # station, fuel_amount = station_amount
 
         # Computing how much fuel will we have when we arrive station
         current_lack = self.tank_capacity - self.curr_fuel_level  # current space in tank
@@ -57,7 +60,16 @@ class Car:
         # Computing how much will we have when we back at road from station
         self.curr_fuel_level = self.curr_fuel_level - station.extra_route / 100 * self.ave_fuel_consumption
         self.curr_position = station.road_position
-        self.fuel_level_at_steps.append(self.curr_fuel_level)
+
+        # Checking if it is init solution or not
+        if station_to_drop is None:
+            # If init - we do not have pop element form curr_fuel_level
+            self.fuel_level_at_steps.append(self.curr_fuel_level)
+            return amount_to_tank
+        else:
+            # If not, we have to pop and insert new value
+            self.fuel_level_at_steps.pop(station_to_drop + 1)
+            self.fuel_level_at_steps.insert(station_to_drop + 1, self.curr_fuel_level)
         return amount_to_tank
 
 
@@ -66,7 +78,7 @@ class Solution:
     def __init__(self, car: Car, solution=None):
         """
         :param solution: Vector of stations and amount of petrol we should buy, for instance:
-        [(A, 10), (B, 21), (C, 234)], if None it will be a empty list and we can add
+        [(A, 10), (B, 21), (C, 234)], if None it will be an empty list and we can add
         """
         self.solution = solution
         self.car = car
@@ -83,25 +95,53 @@ class Solution:
         else:
             self.__solution = value
 
-    def add_station(self, station_amount: Tuple[Station, float]) -> None:
+    def add_station(self, station_amount: Tuple[Station, float], insert_index: int = None) -> None:
         """
-
-        Add new station and amount of petrol bought eg. ("A1", 20) and  update car info
+        Add new station and amount of petrol bought eg. ("A1", 20)
         :param station_amount:
+        :param insert_index: Index where insert new station - If None, insert at end
         :return:
         """
-        # TODO pasuje jeszcze dodać do postaci rozwiązania(lub inaczej to zapisać) informacje o ilości paliwa po zatankowaniu
-        # i wróceniu na trase. Wtedy Jak mamy stacje A -> B -> C i wyrzucimy B, to przsuwamy car na A, i możemy mu ustawić dzięki
-        # temu car.curr_fuel_level. car.curr_position ustawaimy mu wtedy jako B.road_position.
 
-        self.__solution.append(station_amount)
+        if insert_index is None:
+            insert_index = len(self.solution)
+        self.solution.insert(insert_index, station_amount)
         # Updating penalty function, if we tank less than half of tank capacity
         if station_amount[1] < self.car.tank_capacity / 2:
             # The less we tank at once time, the more we punish
-            self.penalty_function.append((self.car.tank_capacity / 2 - station_amount[1]) * 0.5)
+            self.penalty_function.insert(insert_index, (self.car.tank_capacity / 2 - station_amount[1]) * 0.5)
+        else:
+            self.penalty_function.insert(insert_index, 0)
+
+    def remove_station(self, station_index: int):
+        """
+        Method to remove station from solution and penalty_function
+        :param station_index: Index of station to remove
+        :return:
+        """
+        self.solution.pop(station_index)
+        self.penalty_function.pop(station_index)
 
     def solution_value(self) -> float:
         return sum([station[0].price * station[1] for station in self.solution]) + sum(self.penalty_function)
+
+    def get_station_position(self, station_index):
+        """
+        Method to return station position from index
+        :param station_index: Station index
+        :return:
+        """
+        if station_index == -1:
+            return 0
+        return self.solution[station_index][0].road_position
+
+    def get_station(self, station_index):
+        """
+        Method to return station from index
+        :param station_index:
+        :return:
+        """
+        return self.solution[station_index][0]
 
     def __iter__(self):
         return iter(self.solution)
@@ -126,3 +166,6 @@ class Solution:
 
     def __sub__(self, other):
         return self.solution_value() - other.solution_value()
+
+    def __len__(self):
+        return len(self.solution)

@@ -1,5 +1,6 @@
 from data_structures import Solution, Car, Station
 from typing import List
+import matplotlib.pyplot as plt
 
 
 def any_station_too_far(max_dist: int, solution: Solution) -> bool:
@@ -32,9 +33,44 @@ def list_of_possible_station(car: Car, station_list: List[Station]):
     :return: List of available station to tank at particular part of algorithm
     """
     # Computing how far can we arrive with current level of fuel
-    remain_distance = car.curr_fuel_level / car.ave_fuel_consumption * 100
+    curr_range = car.curr_fuel_level / car.ave_fuel_consumption * 100
     # Computing List of available station at particular part. We cannot turn back at our road
     # and we have to arrive station with fuel at tank
     return [station for station in station_list if station.road_position > car.curr_position and
-            (station.road_position - car.curr_position + station.extra_route) < remain_distance]
+            (station.road_position - car.curr_position + station.extra_route) < curr_range]
 
+
+def is_station_too_far(car: Car, new_station: Station, next_station: Station) -> bool:
+    """
+    Function to check if we can arrive from new chose station at sa_algorithm.new_solution()
+    to next station in solution. If  drop last station, set next_station as Station(0,0,0,end_of_route)
+    :param car: instance of Car class
+    :param new_station: New choosen station
+    :param next_station: Next station in solution
+    :return: true if station is too faar, else false
+    """
+
+    # TODO tutaj jest założone że jest tankowane full, w razie czego do zmiany
+    fuel_level = car.tank_capacity - new_station.extra_route / 100 * car.ave_fuel_consumption
+
+    curr_range = fuel_level / car.ave_fuel_consumption * 100
+    if curr_range > next_station.road_position - new_station.road_position + next_station.extra_route and next_station.road_position > new_station.road_position:
+        return False
+
+    return True
+
+
+def plot_score(lst: List[float], iter: int) -> None:
+    """
+    Function to plot solution value trough iteration
+    :param lst: Lst of particular solution value
+    :param iter: Nuber of iteration
+    :return:
+    """
+    plt.style.use('ggplot')
+    plt.plot(range(iter), lst)
+    plt.xlabel('Iteracja')
+    plt.ylabel('Funkcja celu')
+    plt.title('Wartość funkcji celu w poszczególnych iteracjach')
+    plt.show()
+    return None
