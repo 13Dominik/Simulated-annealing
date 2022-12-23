@@ -1,5 +1,7 @@
+import random
+import numpy as np
 from data_structures import Solution, Car, Station
-from typing import List
+from typing import List, Tuple
 import matplotlib.pyplot as plt
 
 
@@ -60,17 +62,68 @@ def is_station_too_far(car: Car, new_station: Station, next_station: Station) ->
     return True
 
 
-def plot_score(lst: List[float], iter: int) -> None:
+def plot_score(lst: List[float], iter_number: int) -> None:
     """
     Function to plot solution value trough iteration
     :param lst: Lst of particular solution value
-    :param iter: Nuber of iteration
+    :param iter_number: Nuber of iteration
     :return:
     """
     plt.style.use('ggplot')
-    plt.plot(range(iter), lst)
+    plt.plot(range(iter_number), lst)
     plt.xlabel('Iteracja')
     plt.ylabel('Funkcja celu')
     plt.title('Wartość funkcji celu w poszczególnych iteracjach')
     plt.show()
     return None
+
+
+def random_station_generator(station_amount: int, end_point: int, price_range: Tuple[int]) -> List[Station]:
+    """
+    Function which generate random data, and plot it
+    :param station_amount: Amount of station to generate
+    :param end_point: End of our road
+    :param price_range: Range of random price at generated station
+    :return:
+    """
+    station_list = []
+    coord_list = []
+    for i in range(station_amount):
+        # Randomly generate coordinate
+        x = np.round(random.uniform(0, end_point), 2)
+        y = np.round(random.uniform(0, end_point), 2)
+        # To function y = x
+        a = 1
+        b = 0
+
+        # Suppose our road is function y = x -> then distance from point
+        # to function is equal abs(Ax0 + By0 + C) / sqrt(A^2 + B^2)
+        A = -a
+        B = 1
+        C = b
+        extra_route = np.round(np.abs(A*x + B*y + C) / (np.sqrt(A**2 + B**2)), 2)
+        # Having extra route, now compute Station.road_position its intersection of
+        # perpendicular function to y=x, passer trough point (x,y)
+
+        # slope of perpendicular function to y=x
+        a_prim = -1/a
+        b_prim = y - a_prim * x
+        road_position = np.round((b-b_prim) / (a_prim - a), 2)
+        # road_position its first coordinate of our intersection and also
+        # road.position of our station
+
+        # Generating random price for current station
+        price = np.round(random.uniform(price_range[0], price_range[1]), 2)
+        station_list.append((Station(f'Station: {i}', price, extra_route, road_position)))
+        coord_list.append((x, y))
+
+    # TODO to docelowo to robimy w plotly w jupyterze
+    # Plotting data
+    plt.style.use('ggplot')
+    plt.scatter([el[0] for el in coord_list], [el[1] for el in coord_list], label='Stacje', c='m')
+    plt.plot(range(0, end_point), range(0, end_point), label='Trasa')
+    plt.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+    plt.title('Losowo wygenerowane dane')
+    plt.show()
+
+    return station_list

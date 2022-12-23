@@ -2,7 +2,7 @@ import random
 from math import exp
 from typing import Callable, List, Tuple
 from copy import deepcopy
-from utils import list_of_possible_station, is_station_too_far, plot_score
+from utils import list_of_possible_station, is_station_too_far, plot_score, random_station_generator
 from data_structures import Solution, Station, Car
 
 
@@ -25,6 +25,8 @@ def init_solution(car: Car, end_point: int, stations: List[Station]) -> Solution
 
 
 def new_solution(solution: Solution, car: Car, stations: List[Station], end_point: int = 2500) -> Tuple[Solution, Car]:
+    # TODO: jeszcze trzeba dorzucic warunek o tym ile maksymalnie mozna zjechac z trasy
+    # To już prosto - dodamy to w warunku w 2 funkcjach z utils
     """
     Funtion to create new solution
     :param solution: of current instance Solution in algorithm
@@ -150,13 +152,14 @@ s9 = Station('I',0.5,20,1200)
 s10= Station('J',2,15,1500)
 stations = [s1, s2, s3, s4,s5, s6,s7,s8]
 
+stations_lst = random_station_generator(300,1000,(2,10))
 
-sol = init_solution(c1, 2500, stations)
+sol = init_solution(c1, 1000, stations_lst)
 print(sol)
 
 
 
-final_solution, lst, iter, count = simulated_annealing(new_solution,sol,stations,2500,0.9,0.999,iter_max=1009)
+final_solution, lst, iter_number, count = simulated_annealing(new_solution, sol, stations_lst, 1000, 0.9, 0.999, iter_max=1009)
 print(final_solution)
 
-plot_score(lst,iter)
+plot_score(lst, iter_number)
