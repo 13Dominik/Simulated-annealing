@@ -16,10 +16,13 @@ class Station:
         self.road_position = road_position
 
     def __str__(self):
-        return f"{self.name} {self.price}"
+        return f"{self.name} {self.price}$"
 
     def __repr__(self):
         return f"{self.name} {self.price}$"
+
+    def __eq__(self, other):
+        return self.name == other.name and self.price == other.price
 
 
 class Car:
@@ -109,7 +112,7 @@ class Solution:
         # Updating penalty function, if we tank less than half of tank capacity
         if station_amount[1] < self.car.tank_capacity / 2:
             # The less we tank at once time, the more we punish
-            self.penalty_function.insert(insert_index, (self.car.tank_capacity / 2 - station_amount[1]) * 0.5)
+            self.penalty_function.insert(insert_index, round(self.car.tank_capacity / 2 - station_amount[1] * 0.5, 2))
         else:
             self.penalty_function.insert(insert_index, 0)
 
@@ -124,6 +127,10 @@ class Solution:
 
     def solution_value(self) -> float:
         return sum([station[0].price * station[1] for station in self.solution]) + sum(self.penalty_function)
+
+    def get_penalty(self) -> float:
+        """ Returns sum of all penalties """
+        return sum(self.penalty_function)
 
     def get_station_position(self, station_index):
         """
@@ -142,6 +149,9 @@ class Solution:
         :return:
         """
         return self.solution[station_index][0]
+
+    def get_stations(self):
+        return [elem[0] for elem in self.solution]
 
     def __iter__(self):
         return iter(self.solution)

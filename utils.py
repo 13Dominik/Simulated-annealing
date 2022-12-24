@@ -62,22 +62,6 @@ def is_station_too_far(car: Car, new_station: Station, next_station: Station) ->
     return True
 
 
-def plot_score(lst: List[float], iter_number: int) -> None:
-    """
-    Function to plot solution value trough iteration
-    :param lst: Lst of particular solution value
-    :param iter_number: Nuber of iteration
-    :return:
-    """
-    plt.style.use('ggplot')
-    plt.plot(range(iter_number), lst)
-    plt.xlabel('Iteracja')
-    plt.ylabel('Funkcja celu')
-    plt.title('Wartość funkcji celu w poszczególnych iteracjach')
-    plt.show()
-    return None
-
-
 def random_station_generator(station_amount: int, end_point: int, price_range: Tuple[int]) -> List[Station]:
     """
     Function which generate random data, and plot it
@@ -101,14 +85,14 @@ def random_station_generator(station_amount: int, end_point: int, price_range: T
         A = -a
         B = 1
         C = b
-        extra_route = np.round(np.abs(A*x + B*y + C) / (np.sqrt(A**2 + B**2)), 2)
+        extra_route = np.round(np.abs(A * x + B * y + C) / (np.sqrt(A ** 2 + B ** 2)), 2)
         # Having extra route, now compute Station.road_position its intersection of
         # perpendicular function to y=x, passer trough point (x,y)
 
         # slope of perpendicular function to y=x
-        a_prim = -1/a
+        a_prim = -1 / a
         b_prim = y - a_prim * x
-        road_position = np.round((b-b_prim) / (a_prim - a), 2)
+        road_position = np.round((b - b_prim) / (a_prim - a), 2)
         # road_position its first coordinate of our intersection and also
         # road.position of our station
 
@@ -117,13 +101,19 @@ def random_station_generator(station_amount: int, end_point: int, price_range: T
         station_list.append((Station(f'Station: {i}', price, extra_route, road_position)))
         coord_list.append((x, y))
 
-    # TODO to docelowo to robimy w plotly w jupyterze
-    # Plotting data
-    plt.style.use('ggplot')
-    plt.scatter([el[0] for el in coord_list], [el[1] for el in coord_list], label='Stacje', c='m')
-    plt.plot(range(0, end_point), range(0, end_point), label='Trasa')
-    plt.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
-    plt.title('Losowo wygenerowane dane')
-    plt.show()
+    return station_list, coord_list
 
-    return station_list
+
+def get_cords_of_stations(all_stations: List[Station], solution: Solution, coord_list: List[Tuple[int]]) -> List[
+    Tuple[float]]:
+    """
+    Function that returns coors of choosen stations from all stations
+    :param all_stations: All possible stations in whole algorithm
+    :param solution: Stations that we have chosen
+    :param coord_list: All stations coords list
+    :return: List of tuples of coordinates
+    """
+    cords = []
+    for station in solution.get_stations():
+        cords.append(coord_list[all_stations.index(station)])
+    return cords
