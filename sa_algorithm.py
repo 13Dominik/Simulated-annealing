@@ -163,24 +163,24 @@ s9 = Station('I', 0.5, 20, 1200)
 s10 = Station('J', 2, 15, 1500)
 stations = [s1, s2, s3, s4, s5, s6, s7, s8]
 
-stations_lst, cord_list = random_station_generator(200, 5000, (2, 10))
-plot_random_stations(5000, cord_list)
-sol = init_solution(c1, 5000, stations_lst)
-print(sol)
-print(sol.penalty_function)
-
-final_solution, lst, iter_number, count = simulated_annealing(new_solution, sol, stations_lst, 5400, 0.9, 0.999,
-                                                              iter_max=1009)
-print(final_solution.get_stations())
-
-print(get_cords_of_stations(stations_lst, final_solution, cord_list))
-coords = get_cords_of_stations(stations_lst, final_solution, cord_list)
-
-
-
-#print(final_solution[0])
-#print(final_solution.get_station(0))
-#plot_solution(5000, coords, final_solution)
-print(final_solution.penalty_function)
-
-plot_score(lst, iter_number)
+# stations_lst, cord_list = random_station_generator(200, 5000, (2, 10))
+# plot_random_stations(5000, cord_list)
+# sol = init_solution(c1, 5000, stations_lst)
+# print(sol)
+# print(sol.penalty_function)
+#
+# final_solution, lst, iter_number, count = simulated_annealing(new_solution, sol, stations_lst, 5400, 0.9, 0.999,
+#                                                               iter_max=1009)
+# print(final_solution.get_stations())
+#
+# print(get_cords_of_stations(stations_lst, final_solution, cord_list))
+# coords = get_cords_of_stations(stations_lst, final_solution, cord_list)
+#
+#
+#
+# #print(final_solution[0])
+# #print(final_solution.get_station(0))
+# #plot_solution(5000, coords, final_solution)
+# print(final_solution.penalty_function)
+#
+# plot_score(lst, iter_number)
