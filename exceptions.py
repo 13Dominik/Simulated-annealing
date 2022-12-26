@@ -2,7 +2,12 @@ class WrongDataFormatError(Exception):
     """
     Raised when txt file with Car, Stations and end_point have a wrong format or missing data
     """
-    pass
+
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return str(self.message)
 
 
 class NoStationsError(Exception):

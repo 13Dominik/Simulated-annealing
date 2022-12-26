@@ -41,7 +41,7 @@ class Car:
         # Contains fuel level in tank at every route stage (station position)
         self.fuel_level_at_steps = [self.curr_fuel_level]
 
-    def get_fuel_level_at_step(self,index):
+    def get_fuel_level_at_step(self, index):
         return self.fuel_level_at_steps[index]
 
     def move_car(self, station: Station, station_to_drop: int = None) -> float:
@@ -54,7 +54,8 @@ class Car:
 
         # Computing how much fuel will we have when we arrive station
         current_lack = self.tank_capacity - self.curr_fuel_level  # current space in tank
-        fuel_we_will_use = (station.road_position - self.curr_position + station.extra_route) / 100 * self.ave_fuel_consumption
+        fuel_we_will_use = (
+                                       station.road_position - self.curr_position + station.extra_route) / 100 * self.ave_fuel_consumption
         # current_lack + amount of fuel we will use to get in to the station
         amount_to_tank = fuel_we_will_use + current_lack
 
@@ -74,6 +75,9 @@ class Car:
             self.fuel_level_at_steps.pop(station_to_drop + 1)
             self.fuel_level_at_steps.insert(station_to_drop + 1, self.curr_fuel_level)
         return amount_to_tank
+
+    def __eq__(self, other):
+        return self.tank_capacity == other.tank_capacity and self.ave_fuel_consumption == other.ave_fuel_consumption
 
 
 class Solution:
