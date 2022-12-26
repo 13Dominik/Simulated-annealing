@@ -1,8 +1,16 @@
 import unittest
+import os
 
-from read_data import validate_txt_data, read_txt
-from exceptions import WrongDataFormatError
-from data_structures import Car, Station
+from src.read_data import validate_txt_data, read_txt
+from src.exceptions import WrongDataFormatError
+from src.data_structures import Car, Station
+
+
+# It is needed because of test_data directory
+if os.getcwd().endswith("test"):
+    pass
+else:
+    os.chdir('test')
 
 
 class TestValidateTxtData(unittest.TestCase):

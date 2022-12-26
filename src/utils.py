@@ -1,8 +1,8 @@
 import random
 import numpy as np
-from data_structures import Solution, Car, Station
 from typing import List, Tuple
-import matplotlib.pyplot as plt
+
+from src.data_structures import Solution, Car, Station
 
 
 def any_station_too_far(max_dist: int, solution: Solution) -> bool:

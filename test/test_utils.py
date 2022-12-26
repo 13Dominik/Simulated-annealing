@@ -1,6 +1,6 @@
 import unittest
-import data_structures as ds
-from utils import any_station_too_far, fuel_amount_in_limit, list_of_possible_station, get_cords_of_stations, \
+import src.data_structures as ds
+from src.utils import any_station_too_far, fuel_amount_in_limit, list_of_possible_station, get_cords_of_stations, \
     is_station_too_far
 
 

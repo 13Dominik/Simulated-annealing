@@ -2,7 +2,7 @@ from typing import List
 
 import matplotlib.pyplot as plt
 
-from data_structures import Solution
+from src.data_structures import Solution
 
 
 def plot_score(lst: List[float], iter_number: int) -> None:

@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
-from data_structures import Car, Station
-from exceptions import WrongDataFormatError
+from src.data_structures import Car, Station
+from src.exceptions import WrongDataFormatError
 
 
 def validate_txt_data(path) -> None:

@@ -1,7 +1,7 @@
 import unittest
-import sa_algorithm as sa
-import data_structures as ds
-import exceptions as ex
+import src.sa_algorithm as sa
+import src.data_structures as ds
+import src.exceptions as ex
 
 
 class TestInitSolution(unittest.TestCase):

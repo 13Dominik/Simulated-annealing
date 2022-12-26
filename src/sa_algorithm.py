@@ -2,10 +2,11 @@ import random
 from math import exp
 from typing import Callable, List, Tuple
 from copy import deepcopy
-from utils import list_of_possible_station, is_station_too_far, random_station_generator, get_cords_of_stations
-from data_structures import Solution, Station, Car
-from visualization import *
-from exceptions import NoStationsError
+
+from src.utils import list_of_possible_station, is_station_too_far, random_station_generator, get_cords_of_stations
+from src.data_structures import Solution, Station, Car
+from src.visualization import *
+from src.exceptions import NoStationsError
 
 
 def init_solution(car: Car, end_point: int, stations: List[Station]) -> Solution:
