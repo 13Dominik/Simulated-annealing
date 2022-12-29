@@ -61,6 +61,21 @@ def is_station_too_far(car: Car, new_station: Station, next_station: Station) ->
 
     return True
 
+def compute_fuel_before_tank(current_station: Station, last_station: Station, idx: int, car: Car) -> float:
+    """
+    Function to compute how much fuel we had at station before tank
+    :param current_station: Current station we consider
+    :param last_station: Station before current station
+    :param idx: Index of our iteration in mix_values - grabbing fuel_at_step by it
+    :param car: Instance of our Car in our road
+    :return:
+    """
+    # Fuel after tank at last station and back at road
+    fuel_at_step = car.get_fuel_level_at_step(idx)
+    # Distance from last station road position to new station
+    distance_to_ride = current_station.road_position - last_station.road_position + current_station.extra_route
+    fuel_to_use = distance_to_ride / 100 * car.ave_fuel_consumption
+    return round(fuel_at_step - fuel_to_use,2)
 
 def random_station_generator(station_amount: int, end_point: int, price_range: Tuple[int]) -> List[Station]:
     """

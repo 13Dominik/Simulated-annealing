@@ -157,6 +157,9 @@ class Solution:
     def get_stations(self):
         return [elem[0] for elem in self.solution]
 
+    def get_solution(self):
+        return self.solution
+
     def __iter__(self):
         return iter(self.solution)
 
