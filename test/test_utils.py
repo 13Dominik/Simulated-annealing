@@ -51,6 +51,7 @@ class TestFuel_amount_in_limit(unittest.TestCase):
 class TestListOfStation(unittest.TestCase):
     def setUp(self) -> None:
         self.c = ds.Car(50, 10, 10, 50)
+        self.max_dist = 15
         self.s1 = ds.Station("A", 10, 10, 5)
         self.s2 = ds.Station("B", 20, 20, 100)
         self.s3 = ds.Station("C", 15, 7, 350)
@@ -59,8 +60,8 @@ class TestListOfStation(unittest.TestCase):
         self.s6 = ds.Station("F", 15, 10, 600)
 
     def test_list_of_station(self):
-        self.assertEqual([self.s2, self.s3, self.s4],
-                         list_of_possible_station(self.c, [self.s1, self.s2, self.s3, self.s4, self.s5, self.s6]))
+        self.assertEqual([self.s3, self.s4],
+                         list_of_possible_station(self.c, self.max_dist, [self.s1, self.s2, self.s3, self.s4, self.s5, self.s6]))
 
 
 class TestGetCordsOfStations(unittest.TestCase):

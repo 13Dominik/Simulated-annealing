@@ -90,6 +90,7 @@ class Solution:
         self.solution = solution
         self.car = car
         self.penalty_function = []
+        self.left_fuel = None
 
     @property
     def solution(self):
@@ -159,6 +160,21 @@ class Solution:
 
     def get_solution(self):
         return self.solution
+
+    def update_left_fuel(self, endpoint: int) -> None:
+        """
+        Method to update left_fuel parameter
+        :param endpoint: End of our road
+        :return:
+        """
+        # Grabbing last station
+        last_station = self.get_station(-1)
+        # Computing left distance and fuel to use
+        distance_to_ride = endpoint - last_station.road_position
+        fuel_to_use = distance_to_ride / 100 * self.car.ave_fuel_consumption
+
+        # Left fuel is fuel after last tank minus fuel to use
+        self.left_fuel = round(self.car.get_fuel_level_at_step(-1) - fuel_to_use,2)
 
     def __iter__(self):
         return iter(self.solution)

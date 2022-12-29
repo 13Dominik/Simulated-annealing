@@ -9,20 +9,20 @@ class TestInitSolution(unittest.TestCase):
         c = ds.Car(50, 15, 0, 30)
         s1 = ds.Station("A", 0, 10, 201)
         s2 = ds.Station("B", 0, 10, 202)
-        self.assertRaises(ex.NoStationsError, sa.init_solution, c, 300, [s1, s2])
+        self.assertRaises(ex.NoStationsError, sa.init_solution, c, 300, 20, [s1, s2])
 
     def test_init_no_station_step1(self):
         c = ds.Car(50, 15, 0, 30)
         s1 = ds.Station("A", 0, 10, 100)
         s2 = ds.Station("B", 0, 10, 500)
-        self.assertRaises(ex.NoStationsError, sa.init_solution, c, 600, [s1, s2])
+        self.assertRaises(ex.NoStationsError, sa.init_solution, c, 600, 20, [s1, s2])
 
     def test_init_no_station_step2(self):
         c = ds.Car(50, 15, 0, 30)
         s1 = ds.Station("A", 0, 10, 100)
         s2 = ds.Station("B", 0, 10, 200)
         s3 = ds.Station("C", 0, 10, 700)
-        self.assertRaises(ex.NoStationsError, sa.init_solution, c, 700, [s1, s2, s3])
+        self.assertRaises(ex.NoStationsError, sa.init_solution, c, 700, 20, [s1, s2, s3])
 
 
 if __name__ == '__main__':
