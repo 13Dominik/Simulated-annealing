@@ -54,7 +54,6 @@ def is_station_too_far(car: Car, new_station: Station, next_station: Station) ->
     :return: true if station is too faar, else false
     """
 
-    # TODO tutaj jest założone że jest tankowane full, w razie czego do zmiany
     fuel_level = car.tank_capacity - new_station.extra_route / 100 * car.ave_fuel_consumption
 
     curr_range = fuel_level / car.ave_fuel_consumption * 100

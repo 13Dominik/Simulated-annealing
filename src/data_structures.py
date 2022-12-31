@@ -1,5 +1,5 @@
 from typing import List, Tuple
-
+import numpy as np
 
 class Station:
     def __init__(self, name: str, price: float, extra_route: float, road_position: float):
@@ -38,6 +38,7 @@ class Car:
         self.ave_fuel_consumption = ave_fuel_consumption
         self.curr_position = curr_position
         self.curr_fuel_level = curr_fuel_level
+        self.start_fuel_level = self.curr_fuel_level
         # Contains fuel level in tank at every route stage (station position)
         self.fuel_level_at_steps = [self.curr_fuel_level]
 
@@ -90,7 +91,10 @@ class Solution:
         self.solution = solution
         self.car = car
         self.penalty_function = []
+        # Fuel at endpoint
         self.left_fuel = None
+        # Difference between fuel at end_point and at start
+        self.fuel_difference = None
 
     @property
     def solution(self):
@@ -131,7 +135,11 @@ class Solution:
         self.penalty_function.pop(station_index)
 
     def solution_value(self) -> float:
-        return sum([station[0].price * station[1] for station in self.solution]) + sum(self.penalty_function)
+        # Computing solution value included fuel_difference
+        fuel_prices = [elem[0].price for elem in self.solution]
+        mean_price = np.mean(fuel_prices)
+
+        return round(sum([station[0].price * station[1] for station in self.solution]) + sum(self.penalty_function) - mean_price * self.fuel_difference, 2)
 
     def get_penalty(self) -> float:
         """ Returns sum of all penalties """
@@ -163,7 +171,7 @@ class Solution:
 
     def update_left_fuel(self, endpoint: int) -> None:
         """
-        Method to update left_fuel parameter
+        Method to update left_fuel parameter and fuel_difference
         :param endpoint: End of our road
         :return:
         """
@@ -173,8 +181,9 @@ class Solution:
         distance_to_ride = endpoint - last_station.road_position
         fuel_to_use = distance_to_ride / 100 * self.car.ave_fuel_consumption
 
-        # Left fuel is fuel after last tank minus fuel to use
-        self.left_fuel = round(self.car.get_fuel_level_at_step(-1) - fuel_to_use,2)
+        # Left fuel is fuel after last tank minus fuel to use and fuel at beginning
+        self.left_fuel = round(self.car.get_fuel_level_at_step(-1) - fuel_to_use, 2)
+        self.fuel_difference = round(self.left_fuel - self.car.start_fuel_level, 2)
 
     def __iter__(self):
         return iter(self.solution)

@@ -32,7 +32,6 @@ def init_solution(car: Car, end_point: int, max_dist: float, stations: List[Stat
         station = random.choice(stations_in_step)
         amount = car.move_car(station)
         solution.add_station((station, round(amount, 2)))
-    # TODO: Uzupełnić o to jak pozostale paliwo uzywac w solution
     # Updating left fuel at end of road
     solution.update_left_fuel(end_point)
 
@@ -203,8 +202,6 @@ def simulated_annealing(new_solution: Callable, init_solution: Solution, station
     # save the best global solution
     best_solution = solution
     car = init_solution.car
-    # TODO tutaj to best_car bedzie mozna wyjebac - bardziej bylo w celach testu
-    best_car = car
     iterations = 0
     swap_worse_counter = 0
     lst_of_scores = []
@@ -230,7 +227,7 @@ def simulated_annealing(new_solution: Callable, init_solution: Solution, station
         # Condition to upgrade best solution - we can latter lose it
         if solution < best_solution:
             best_solution = solution
-            best_car = car
+
 
         # Updating list of value at every iter
         lst_of_scores.append(solution.solution_value())
@@ -274,6 +271,7 @@ def simulated_annealing(new_solution: Callable, init_solution: Solution, station
 #                                                               iter_max=1009)
 # print(sol)
 # print(final_solution)
+# print(final_solution.left_fuel)
 # plot_random_stations(end_point,cord_lst)
 # plot_score(lst, iter_number)
 
