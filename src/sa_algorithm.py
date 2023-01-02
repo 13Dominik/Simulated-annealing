@@ -215,7 +215,7 @@ def simulated_annealing(new_solution: Callable, init_solution: Solution, station
         else:
             delta = solution_prim - solution
             r = random.uniform(0, 1)
-            if r > exp(-delta / T):
+            if r < exp(-delta / T):
                 solution = solution_prim
                 car = car_prim
                 # Updating counter
