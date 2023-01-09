@@ -185,7 +185,7 @@ def new_solution(solution: Solution, car: Car, stations: List[Station], end_poin
 
 
 def simulated_annealing(new_solution: Callable, init_solution: Solution, stations: List[Station], end_point: int, max_dist: float, P: float,
-                        T: int, alfa: float, iter_max: int = 10000) -> Tuple[Solution, List[float], int, int]:
+                        T: int = 1000, alfa: float = 0.95, iter_max: int = 10000) -> Tuple[Solution, List[float], int, int]:
     """
     :param new_solution: Function that returns new solution to compare
     :param init_solution: First solution
@@ -204,7 +204,7 @@ def simulated_annealing(new_solution: Callable, init_solution: Solution, station
     car = init_solution.car
     iterations = 0
     swap_worse_counter = 0
-    lst_of_scores = []
+    lst_of_scores = [solution.solution_value()]
 
     while iterations < iter_max and T > 0.1:
 
@@ -236,73 +236,4 @@ def simulated_annealing(new_solution: Callable, init_solution: Solution, station
     return best_solution, lst_of_scores, iterations, swap_worse_counter
 
 
-# Wszystko ponizej tylko do testu
-# c1 = Car(150, 10, 0, 50)
-# s1 = Station('A', 1, 10, 150)
-# s2 = Station("C", 3, 20, 200)
-# s3 = Station("B", 3.5, 25, 190)
-# s4 = Station("D", 4, 15, 210)
-# s5 = Station("E", 4, 30, 650)
-# s6 = Station("F", 4, 40, 750)
-# s7 = Station('G', 1, 10, 1000)
-# s8 = Station('H', 1, 15, 1250)
-# s9 = Station('I', 0.5, 20, 1200)
-# s10 = Station('J', 2, 15, 1500)
-# stations = [s1, s2, s3, s4, s5, s6, s7, s8]
-#
-# end_point = 2500
-# max_dist = 30
-# sol = init_solution(c1, end_point, max_dist, stations)
-# print(sol)
-# final_solution, lst, iter_number, count = simulated_annealing(new_solution, sol, stations, end_point,max_dist, 0.8 , 0.9, 0.999,
-#                                                                    iter_max=1009)
-# print(final_solution)
-# print(final_solution.penalty_function)
-# print(final_solution.left_fuel)
 
-# P_lst = [0,0.1,0.3,0.5,0.7,0.9,1]
-# val_lst = []
-#
-#
-#
-# station_lst, cord_lst = random_station_generator(500,end_point,(2,10))
-# sol = init_solution(c1, end_point, max_dist, station_lst)
-# final_solution, lst, iter_number, count = simulated_annealing(new_solution, sol, station_lst, end_point, max_dist, 0.8 , 0.9, 0.999,
-#                                                               iter_max=1009)
-# print(sol)
-# print(final_solution)
-# print(final_solution.left_fuel)
-# plot_random_stations(end_point,cord_lst)
-# plot_score(lst, iter_number)
-
-
-
-# for elem in P_lst:
-#     final_solution, lst, iter_number, count = simulated_annealing(new_solution, sol, station_lst, end_point, max_dist, elem , 0.9, 0.999,
-#                                                               iter_max=1009)
-#     val_lst.append(final_solution.solution_value())
-#
-# print(val_lst)
-
-
-
-# stations_lst, cord_list = random_station_generator(200, 5000, (2, 10))
-# plot_random_stations(5000, cord_list)
-# sol = init_solution(c1, 5000, stations_lst)
-# print(sol)
-# print(sol.penalty_function)
-#
-
-# print(final_solution.get_stations())
-#
-# print(get_cords_of_stations(stations_lst, final_solution, cord_list))
-# coords = get_cords_of_stations(stations_lst, final_solution, cord_list)
-#
-#
-#
-# #print(final_solution[0])
-# #print(final_solution.get_station(0))
-# #plot_solution(5000, coords, final_solution)
-# print(final_solution.penalty_function)
-#
-# plot_score(lst, iter_number)

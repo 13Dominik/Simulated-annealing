@@ -1,6 +1,7 @@
 from typing import List, Tuple
 import numpy as np
 
+
 class Station:
     def __init__(self, name: str, price: float, extra_route: float, road_position: float):
         """
@@ -56,7 +57,7 @@ class Car:
         # Computing how much fuel will we have when we arrive station
         current_lack = self.tank_capacity - self.curr_fuel_level  # current space in tank
         fuel_we_will_use = (
-                                       station.road_position - self.curr_position + station.extra_route) / 100 * self.ave_fuel_consumption
+                                   station.road_position - self.curr_position + station.extra_route) / 100 * self.ave_fuel_consumption
         # current_lack + amount of fuel we will use to get in to the station
         amount_to_tank = fuel_we_will_use + current_lack
 
@@ -82,6 +83,16 @@ class Car:
 
 
 class Solution:
+    """
+    We try to minimize cost of travelling (minimize solution)
+    Value of solution is computed according to the rule:
+    Sum of money spent on every station + penalty function - (+) cost of surplus (minus) of fuel
+
+    Penalty function - is added when we refuel when we have more than half of capacity of tank.
+    Surplus - When at the end (end_point) of route we have more fuel than at start (0 position)
+    Minus - When at the end (end_point) we have less fuel than at start (0 position)
+    Cost of surplus (minus) - is average price of fuel at stations that we tanked
+    """
 
     def __init__(self, car: Car, solution=None):
         """
@@ -136,14 +147,25 @@ class Solution:
 
     def solution_value(self) -> float:
         # Computing solution value included fuel_difference
-        fuel_prices = [elem[0].price for elem in self.solution]
-        mean_price = np.mean(fuel_prices)
 
-        return round(sum([station[0].price * station[1] for station in self.solution]) + sum(self.penalty_function) - mean_price * self.fuel_difference, 2)
+        # computing weighted average
+        fuel_prices = [elem[0].price for elem in self.solution]
+        fuel_amount = [elem[1] for elem in self.solution]
+        mean_price = 0
+        for i in range(len(fuel_amount)):
+            mean_price += fuel_amount[i] * fuel_prices[i]
+        mean_price = (mean_price / sum(fuel_amount))
+
+        return round(sum([station[0].price * station[1] for station in self.solution]) + sum(
+            self.penalty_function) - mean_price * self.fuel_difference, 2)
 
     def get_penalty(self) -> float:
         """ Returns sum of all penalties """
         return sum(self.penalty_function)
+
+    def get_cost_of_solution(self) -> float:
+        """ Returns cost of fuel (without penalty function!!!) """
+        return sum([elem[0].price * elem[1] for elem in self.solution])
 
     def get_station_position(self, station_index):
         """
