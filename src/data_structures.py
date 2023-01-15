@@ -17,10 +17,10 @@ class Station:
         self.road_position = road_position
 
     def __str__(self):
-        return f"{self.name} {self.price}$"
+        return f"{self.name} {self.price} PLN"
 
     def __repr__(self):
-        return f"{self.name} {self.price}$"
+        return f"{self.name} {self.price} PLN"
 
     def __eq__(self, other):
         return self.name == other.name and self.price == other.price
