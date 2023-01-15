@@ -105,7 +105,7 @@ class Solution:
         # Fuel at endpoint
         self.left_fuel = None
         # Difference between fuel at end_point and at start
-        self.fuel_difference = None
+        self.fuel_difference = 0
 
     @property
     def solution(self):
