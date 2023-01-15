@@ -41,13 +41,6 @@ def plot_solution(solution: Solution) -> None:
     y = [elem[0].extra_route for elem in solution.get_solution()]
     x = [elem[0].road_position for elem in solution.get_solution()]
 
-    #for i in range(len(solution)):
-        #string = f"Km trasy: {solution.get_station(i).road_position}\n"
-        #string += f"Ex km: {solution.get_station(i).extra_route}\n"
-        #string += f"il: {solution.solution[i][1]}"
-        #plt.annotate(
-        #    string, (x[i], y[i] + 0.2))
-
     plt.xlabel("Kilometr trasy")
     plt.title("Stacje na które musimy zjechać")
     plt.ylabel("Dodatkowe km do trasy")
